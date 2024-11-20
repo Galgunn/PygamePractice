@@ -2,11 +2,12 @@ from settings import *
 from spritesheet import Spritesheet
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, size, pos, groups) -> None:
+    def __init__(self, size, pos, groups, collision_sprites) -> None:
         super().__init__(groups)
-        self.spritesheet_img = pygame.image.load(join('assets', 'playerSheet.png'))
+        self.spritesheet_img = pygame.image.load(join('Padlock v2', 'assets', 'playerSheet.png'))
         self.spritesheet = Spritesheet(self.spritesheet_img)
         self.size = size
+        self.collision_sprites = collision_sprites
 
         # Movement
         self.direction = pygame.Vector2()
@@ -32,7 +33,8 @@ class Player(pygame.sprite.Sprite):
 
         # Image and Rect
         self.image = self.animation_list[self.action][self.frame]
-        self.rect = self.animation_list[self.action][self.frame].get_frect(center = pos)
+        #self.rect = self.animation_list[self.action][self.frame].get_frect(center = pos)
+        self.rect = pygame.FRect(0, 0, self.size[0], self.size[1])
 
     def get_frames(self):
         # Main animation list
@@ -47,7 +49,7 @@ class Player(pygame.sprite.Sprite):
         for frames in self.animation_frames:
             temp_list = []
             for x in range(frames):
-                temp_list.append(self.spritesheet.get_image(x, self.size[0], self.size[1], strip_counter, (0, 0, 0)))
+                temp_list.append(self.spritesheet.get_image(x, 32, 32, strip_counter, (0, 0, 0)))
             strip_counter += 1
             self.animation_list.append(temp_list)
 
@@ -111,7 +113,23 @@ class Player(pygame.sprite.Sprite):
 
     def move(self, dt):
         self.rect.x += self.direction.x * self.speed * dt
+        self.collision('horizontal')
         self.rect.y += self.direction.y * self.speed * dt
+        self.collision('vertical')
+
+    def collision(self, direction):
+        for sprite in self.collision_sprites:
+            if sprite.rect.colliderect(self.rect):
+                if direction == 'horizontal':
+                    if self.direction.x > 0: # moving right
+                        self.rect.right = sprite.rect.left
+                    if self.direction.x < 0: # moving left
+                        self.rect.left = sprite.rect.right
+                if direction == 'vertical':
+                    if self.direction.y > 0: # moving down
+                        self.rect.bottom = sprite.rect.top
+                    if self.direction.y < 0: # moving up
+                        self.rect.top = sprite.rect.bottom
 
     def update(self, dt):
         self.input()
