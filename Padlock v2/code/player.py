@@ -6,7 +6,6 @@ class Player(pygame.sprite.Sprite):
         super().__init__(groups)
         self.spritesheet_img = pygame.image.load(join('Padlock v2', 'assets', 'playerSheet.png'))
         self.spritesheet = Spritesheet(self.spritesheet_img)
-        self.size = size
         self.collision_sprites = collision_sprites
 
         # Movement
@@ -33,8 +32,8 @@ class Player(pygame.sprite.Sprite):
 
         # Image and Rect
         self.image = self.animation_list[self.action][self.frame]
-        #self.rect = self.animation_list[self.action][self.frame].get_frect(center = pos)
-        self.rect = pygame.FRect(0, 0, self.size[0], self.size[1])
+        self.rect = self.animation_list[self.action][self.frame].get_frect(center = pos)
+        self.hitbox_rect = pygame.FRect((0, 0), size)
 
     def get_frames(self):
         # Main animation list
@@ -110,26 +109,36 @@ class Player(pygame.sprite.Sprite):
         else:
             self.direction
         
-
     def move(self, dt):
-        self.rect.x += self.direction.x * self.speed * dt
-        self.collision('horizontal')
-        self.rect.y += self.direction.y * self.speed * dt
-        self.collision('vertical')
+        # Move hitbox left or right
+        self.hitbox_rect.x += self.direction.x * self.speed * dt
+        self.collision('horizontal') # Check for horizontal collisions
+        
+        # Move hitbox up or down
+        self.hitbox_rect.y += self.direction.y * self.speed * dt
+        self.collision('vertical') # Check for vertical collisions
+
+        # Adjust rect to hitbox rect pos
+        self.rect.center = self.hitbox_rect.center
 
     def collision(self, direction):
+        # Access collision sprites group
         for sprite in self.collision_sprites:
-            if sprite.rect.colliderect(self.rect):
+
+            # Check if there is collision with any of the sprites and hitbox
+            if sprite.rect.colliderect(self.hitbox_rect):
+
+                # Boundry check accordingly
                 if direction == 'horizontal':
                     if self.direction.x > 0: # moving right
-                        self.rect.right = sprite.rect.left
+                        self.hitbox_rect.right = sprite.rect.left
                     if self.direction.x < 0: # moving left
-                        self.rect.left = sprite.rect.right
+                        self.hitbox_rect.left = sprite.rect.right
                 if direction == 'vertical':
                     if self.direction.y > 0: # moving down
-                        self.rect.bottom = sprite.rect.top
+                        self.hitbox_rect.bottom = sprite.rect.top
                     if self.direction.y < 0: # moving up
-                        self.rect.top = sprite.rect.bottom
+                        self.hitbox_rect.top = sprite.rect.bottom
 
     def update(self, dt):
         self.input()

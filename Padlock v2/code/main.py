@@ -14,8 +14,8 @@ class Game():
         self.collision_sprites = pygame.sprite.Group()
 
         # Create Sprites
-        self.player = Player((10, 14), (50, 50), self.all_sprites, self.collision_sprites)
         self.obj = CollisionSprite((100, 100), (50, 50), (self.all_sprites, self.collision_sprites))
+        self.player = Player((10, 14), (50, 50), self.all_sprites, self.collision_sprites)
 
     def run(self) -> None:
         self.run = True
@@ -34,7 +34,6 @@ class Game():
 
             # Draw
             self.all_sprites.draw(self.display)
-            pygame.draw.rect(self.display, ('black'), self.player.rect, 2)
             pygame.display.flip()
 
 if __name__ == '__main__':
