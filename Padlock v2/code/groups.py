@@ -10,6 +10,6 @@ class AllSprites(pygame.sprite.Group):
         for sprite in self:
             display.blit(sprite.image, sprite.rect)
         
-        scaled_display = pygame.transform.scale(display, self.screen.get_size())
         display.fill('white')
+        scaled_display = pygame.transform.scale(display, self.screen.get_size())
         self.screen.blit(scaled_display, (0, 0))
