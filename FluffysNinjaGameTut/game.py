@@ -27,10 +27,6 @@ class Game:
         self.player = PhysicsEntity(self, 'player', (50, 50), (8, 15))
         
         self.tilemap = Tilemap(self, tile_size=16)
-
-        # print()
-        # print('assets')
-        # print(self.assets)
         
     def run(self):
         while True:
@@ -39,6 +35,7 @@ class Game:
             self.tilemap.render(self.display)
             
             self.player.update(self.tilemap, (self.movement[1] - self.movement[0], 0))
+
             self.player.render(self.display)
             
             for event in pygame.event.get():
