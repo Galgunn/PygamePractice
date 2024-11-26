@@ -15,6 +15,13 @@ class Tilemap:
             self.tilemap['10;' + str(5 + i)] = {'type': 'stone', 'variant': 1, 'pos': (10, 5 + i)}
 
         print(self.tilemap)
+        print()
+        print(self.game.assets)
+        print()
+        print(self.game.assets['grass'])
+        print()
+        print(self.game.assets['grass'][0])
+
     
     def tiles_around(self, pos):
         tiles = []

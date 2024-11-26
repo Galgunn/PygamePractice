@@ -27,6 +27,10 @@ class Game:
         self.player = PhysicsEntity(self, 'player', (50, 50), (8, 15))
         
         self.tilemap = Tilemap(self, tile_size=16)
+
+        # print()
+        # print('assets')
+        # print(self.assets)
         
     def run(self):
         while True:
