@@ -67,11 +67,16 @@ class Tilemap:
         for tile in self.offgrid_tiles:
             surf.blit(self.game.assets[tile['type']][tile['variant']], (tile['pos'][0] - offset[0], tile['pos'][1] - offset[1]))
 
+        # First look for tiles in the x axis
         for x in range(offset[0] // self.tile_size, (offset[0] + surf.get_width()) // self.tile_size + 1):
+            # Then look for tiles in the y axis
             for y in range(offset[1] // self.tile_size, (offset[1] + surf.get_height()) // self.tile_size + 1):
                 loc = str(x) + ';' + str(y)
+                # Check if a location is in the tile map dict
                 if loc in self.tilemap:
+                    # Get the tile
                     tile = self.tilemap[loc]
+                    # Blit to the surf provided
                     surf.blit(self.game.assets[tile['type']][tile['variant']], (tile['pos'][0] * self.tile_size - offset[0], tile['pos'][1] * self.tile_size - offset[1]))
 
         '''    
