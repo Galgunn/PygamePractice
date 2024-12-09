@@ -26,6 +26,11 @@ class Editor:
         
         self.tilemap = Tilemap(self, tile_size=16)
 
+        try:
+            self.tilemap.load('map.json')
+        except FileNotFoundError:
+            pass
+
         # Camera
         self.scroll = [0, 0]
 
@@ -140,6 +145,8 @@ class Editor:
                         self.shift = True
                     if event.key == pygame.K_g:
                         self.ongrid = not self.ongrid
+                    if event.key == pygame.K_o:
+                        self.tilemap.save('map.json')
                 
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_a:

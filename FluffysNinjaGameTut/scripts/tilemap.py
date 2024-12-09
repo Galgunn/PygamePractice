@@ -9,6 +9,7 @@ to get grid pos you must divide and turn into an int
 to get pixel pos you must multiply
     (gridpos[0] * TILE_SIZE, gridpos[1] * TILE_SIZE)
 '''
+import json
 
 import pygame
 
@@ -58,6 +59,20 @@ class Tilemap:
                 # Create and add a rect object of the tile to rects
                 rects.append(pygame.Rect(tile['pos'][0] * self.tile_size, tile['pos'][1] * self.tile_size, self.tile_size, self.tile_size))
         return rects
+    
+    def save(self, path):
+        f = open(path, 'w')
+        json.dump({'tilemap': self.tilemap, 'tile_size': self.tile_size, 'offgrid': self.offgrid_tiles}, f)
+        f.close()
+
+    def load(self, path):
+        f = open(path, 'r')
+        map_data = json.load(f)
+        f.close()
+
+        self.tilemap = map_data['tilemap']
+        self.tile_size = map_data['tile_size']
+        self.offgrid_tiles = map_data['offgrid']
 
     def render(self, surf, offset=(0, 0)):
         for tile in self.offgrid_tiles:
