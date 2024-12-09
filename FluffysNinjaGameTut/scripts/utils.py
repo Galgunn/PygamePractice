@@ -22,9 +22,6 @@ class Animation:
         self.done = False
         self.frame = 0
 
-        print(self.images)
-        print(len(self.images))
-
     def copy(self):
         return Animation(self.images, self.img_duration, self.loop)
     
