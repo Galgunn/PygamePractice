@@ -22,16 +22,18 @@ class Editor:
             'stone': load_images('tiles/stone')
         }
 
+        # Camera movement
         self.movement = [False, False, False, False]
         
         self.tilemap = Tilemap(self, tile_size=16)
 
+        # Loading of tilemap
         try:
             self.tilemap.load('map.json')
         except FileNotFoundError:
             pass
 
-        # Camera
+        # Camera offset
         self.scroll = [0, 0]
 
         # Get tile
@@ -43,6 +45,7 @@ class Editor:
         self.left_click = False
         self.right_click = False
         self.shift = False
+        # Grid placement toggle
         self.ongrid = True
         
     def run(self):
@@ -74,7 +77,7 @@ class Editor:
             else:
                 self.display.blit(current_tile_img, mpos)
 
-            # Place tile
+            # Add tile to tilemap
             if self.left_click and self.ongrid:
                 # Add dict of tile to tilemap variable in Tilemap
                 self.tilemap.tilemap[str(tile_pos[0]) + ';' + str(tile_pos[1])] = {'type': self.tile_list[self.tile_group], 'variant': self.tile_variant, 'pos': tile_pos}
@@ -91,6 +94,7 @@ class Editor:
                     if tile_rect.collidepoint(mpos):
                         self.tilemap.offgrid_tiles.remove(tile)
 
+            # Display the current tile your selecting
             self.display.blit(current_tile_img, (5, 5))
             
             for event in pygame.event.get():
@@ -145,6 +149,8 @@ class Editor:
                         self.shift = True
                     if event.key == pygame.K_g:
                         self.ongrid = not self.ongrid
+                    if event.key == pygame.K_t:
+                        self.tilemap.autotile()
                     if event.key == pygame.K_o:
                         self.tilemap.save('map.json')
                 
