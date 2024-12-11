@@ -1,5 +1,8 @@
 import pygame, sys
 
+from scripts.utils import load_image
+
+
 
 WINDOW_WIDTH = 640
 WINDOW_HEIGHT = 480
@@ -9,6 +12,9 @@ class Game():
         self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         pygame.display.set_caption('Practicing')
         self.clock = pygame.time.Clock()
+
+        self.player_img = load_image('player')
+        print(self.player_img)
 
     def run(self):
         self.run = True
