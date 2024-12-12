@@ -14,23 +14,18 @@ def load_images(path):
     return images
 
 class Spritesheet():
-    def __init__(self, spritesheet):
-        self.sheet = spritesheet
+    def __init__(self, img, size):
+        self.sheet = img
+        self.size = size
         
-    def get_images(self, frame, w, h, strip, color=(0, 0, 0)):
-        img = pygame.Surface((w, h))
-        img.blit(self.sheet, (0, 0), ((frame * w, ), (strip * h), w, h))
-        img.set_colorkey(color)
-        return img
+    def get_image(self, column, row, color=(0, 0, 0)):
+        surf = pygame.Surface(self.size)
+        surf.blit(self.sheet, (0, 0), ((column * self.size[0]), (row * self.size[1]), self.size[0], self.size[1]))
+        surf.set_colorkey(color)
+        return surf
     
-    def get_frames(self, action_frames):
-        self.animation_frames = []
-        self.action_frames = action_frames
-        strip_counter = 0
-        for frames in self.action_frames:
-            temp_list = []
-            for x in range(frames):
-                temp_list.append(self.get_images(x, 32, 32, strip_counter, (0, 0, 0)))
-            strip_counter += 1
-            self.animation_frames.append(temp_list)
-        return self.animation_frames
+    def get_frames(self, row, frames):
+        animation_frames = []
+        for x in range(frames):
+            animation_frames.append(self.get_image(x, row, (0, 0, 0)))
+        return animation_frames
