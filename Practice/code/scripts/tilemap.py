@@ -23,7 +23,7 @@ class Tilemap:
                 tiles.append(self.tilemap[check_loc])
         return tiles
     
-    def physics_rect_around(self, pos):
+    def physics_rect_around(self, pos) -> list:
         rects = []
         for tile in self.tiles_around(pos):
             if tile['type'] in PHYSIC_TILES:
