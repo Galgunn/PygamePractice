@@ -23,7 +23,7 @@ class Game():
             'wall': self.tile_sheet.get_image(1, 0, (0, 0, 0))
         }
 
-        self.player = Entity(self, 'player', (0, 0), (15, 19))
+        self.player = Entity(self, 'player', (0, 0), (12, 14))
         self.movement = [False, False, False, False]
 
         self.tilemap = Tilemap(self, 16)

@@ -17,7 +17,7 @@ class Entity:
 
         self.pos[0] += frame_movement[0]
         entity_rect = self.rect()
-        for rect in tilemap.physics_rect_around(self.pos):
+        for rect in tilemap.physics_rect_around(self.pos, self.size):
             if entity_rect.colliderect(rect):
                 if frame_movement[0] > 0:
                     entity_rect.right = rect.left
@@ -29,8 +29,7 @@ class Entity:
                     
         self.pos[1] += frame_movement[1]
         entity_rect = self.rect()
-        print(entity_rect.y)
-        for rect in tilemap.physics_rect_around(self.pos):
+        for rect in tilemap.physics_rect_around(self.pos, self.size):
             if entity_rect.colliderect(rect):
                 if frame_movement[1] > 0:
                     entity_rect.bottom = rect.top
@@ -42,5 +41,5 @@ class Entity:
 
     def render(self, surf):
         rect = self.rect()
-        pygame.draw.rect(surf, (0, 0, 0), rect, 2)
+        pygame.draw.rect(surf, (250, 0, 0), rect, 1)
         surf.blit(self.game.assets[self.type][0], self.pos)
