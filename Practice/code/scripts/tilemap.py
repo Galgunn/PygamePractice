@@ -14,7 +14,7 @@ class Tilemap:
             self.tilemap[str(3 + i) + ';10'] = {'type': 'brick', 'pos': (3 + i, 10)}
             self.tilemap['10;' + str(5 + i)] = {'type': 'wall', 'pos': (10, 5 + i)}
 
-    def tiles_around(self, pos, size) -> list:
+    def tiles_around(self, pos) -> list:
         tiles = []
         tile_loc = (int(pos[0] // self.tile_size), int(pos[1] // self.tile_size))
         for offset in NEIGHBOR_OFFSETS:
