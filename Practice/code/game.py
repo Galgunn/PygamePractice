@@ -1,7 +1,7 @@
 import pygame, sys
 
-from scripts.utils import load_image, Spritesheet
-from scripts.entities import Entity
+from scripts.utils import load_image, load_images, Animation
+from scripts.entities import Entity, Player
 from scripts.tilemap import Tilemap
 
 WINDOW_WIDTH = 640
@@ -14,16 +14,19 @@ class Game():
         self.clock = pygame.time.Clock()
         self.display = pygame.Surface((WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
 
-        self.player_sheet = Spritesheet(load_image('player/playerSheet.png'), (16, 16))
-        self.tile_sheet = Spritesheet(load_image('tiles/tiles.png'), (16, 16))
-
         self.assets = {
-            'player': self.player_sheet.get_frames(0, 2),
-            'brick': self.tile_sheet.get_image(0, 0, (0, 0, 0)),
-            'wall': self.tile_sheet.get_image(1, 0, (0, 0, 0))
+            'player': load_image('player/idle/right/0.png'),
+            'brick': load_image('tiles/brick/0.png'),
+            'wall': load_image('tiles/wall/0.png'),
+            'player/idle/down': Animation(load_images('player/idle/down'), frame_dur=10),
+            'player/idle/right': Animation(load_images('player/idle/right'), frame_dur=10),
+            'player/idle/up': Animation(load_images('player/idle/up'), frame_dur=10),
+            'player/walk/down': Animation(load_images('player/walk/down'), frame_dur=6),
+            'player/walk/right': Animation(load_images('player/walk/right'), frame_dur=6),
+            'player/walk/up': Animation(load_images('player/walk/up'), frame_dur=6),
         }
 
-        self.player = Entity(self, 'player', (0, 0), (12, 14))
+        self.player = Player(self, (0, 0), (5, 14))
         self.movement = [False, False, False, False]
 
         self.tilemap = Tilemap(self, 16)
@@ -61,8 +64,6 @@ class Game():
                         self.movement[2] = False
                     if event.key == pygame.K_DOWN:
                         self.movement[3] = False
-
-            
 
             # Game rendering
             self.screen.blit(pygame.transform.scale(self.display, self.screen.get_size()), (0, 0))
