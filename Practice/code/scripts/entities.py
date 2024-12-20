@@ -10,7 +10,7 @@ class Entity:
 
         #Animation
         self.action = ''
-        self.anim_offset = (-3, -3)
+        self.anim_offset = (1, 0)
         self.flip = False
         self.set_action('idle/right')
 
@@ -32,41 +32,42 @@ class Entity:
 
     def update(self, tilemap, movement=(0, 0)):
         self.collisions = {'left': False, 'right': False, 'up': False, 'down': False}
-        if movement:
-            movement = self.normalize(movement)
+        frame_movement = pygame.math.Vector2(movement)
+        if frame_movement.magnitude() != 0:
+            frame_movement = frame_movement.normalize()
 
-        self.pos[0] += movement[0]
+        self.pos[0] += frame_movement[0]
         entity_rect = self.rect()
         for rect in tilemap.physics_rect_around(self.pos):
             if entity_rect.colliderect(rect):
-                if movement[0] > 0:
+                if frame_movement[0] > 0:
                     entity_rect.right = rect.left
                     self.collisions['right'] = True
-                if movement[0] < 0:
+                if frame_movement[0] < 0:
                     entity_rect.left = rect.right
                     self.collisions['left'] = True
                 self.pos[0] = entity_rect.x
                     
-        self.pos[1] += movement[1]
+        self.pos[1] += frame_movement[1]
         entity_rect = self.rect()
         for rect in tilemap.physics_rect_around(self.pos):
             if entity_rect.colliderect(rect):
-                if movement[1] > 0:
+                if frame_movement[1] > 0:
                     entity_rect.bottom = rect.top
                     self.collisions['down'] = True
-                if movement[1] < 0:
+                if frame_movement[1] < 0:
                     entity_rect.top = rect.bottom
                     self.collisions['up'] = True
                 self.pos[1] = entity_rect.y
 
-        if movement[0] > 0:
+        if frame_movement[0] > 0:
             self.flip = False
-        if movement[0] < 0:
+        if frame_movement[0] < 0:
             self.flip = True
 
         self.animation.update()
 
-    def render(self, surf):
+    def render(self, surf, offset=(0, 0)):
         surf.blit(pygame.transform.flip(self.animation.img(), self.flip, False), (self.pos[0], self.pos[1]))
 
 class Player(Entity):
