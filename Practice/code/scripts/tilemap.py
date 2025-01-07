@@ -32,8 +32,8 @@ class Tilemap:
 
     def render(self, surf, offset=(0, 0)):
         for tile in self.offgrid:
-            surf.blit(self.game.assets[tile['type']], (tile['pos'][0], tile['pos'][1]))
+            surf.blit(self.game.assets[tile['type']], (tile['pos'][0]- offset[0], tile['pos'][1] - offset[1]))
 
         for loc in self.tilemap:
             tile = self.tilemap[loc]
-            surf.blit(self.game.assets[tile['type']], (tile['pos'][0] * self.tile_size, tile['pos'][1] * self.tile_size))
+            surf.blit(self.game.assets[tile['type']], (tile['pos'][0] * self.tile_size - offset[0], tile['pos'][1] * self.tile_size - offset[1]))

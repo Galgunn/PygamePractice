@@ -1,6 +1,6 @@
 import pygame, sys
 
-from scripts.utils import load_image, load_images, Animation
+from scripts.utils import load_image, load_images, Animation, Spritesheet
 from scripts.entities import Entity, Player
 from scripts.tilemap import Tilemap
 
@@ -14,6 +14,8 @@ class Game():
         pygame.display.set_caption('Practicing')
         self.clock = pygame.time.Clock()
         self.display = pygame.Surface((WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
+
+        self.player_spritesheet = Spritesheet(load_image(''))
 
         self.assets = {
             'player': load_image('player/idle/right/0.png'),
