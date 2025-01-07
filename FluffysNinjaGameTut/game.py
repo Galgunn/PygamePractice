@@ -23,6 +23,8 @@ class Game:
             'stone': load_images('tiles/stone'),
             'player': load_image('entities/player.png')
         }
+
+        print(self.assets)
         
         self.player = PhysicsEntity(self, 'player', (50, 50), (8, 15))
         
